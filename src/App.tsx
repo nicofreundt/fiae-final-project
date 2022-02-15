@@ -5,7 +5,7 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import Tab1 from './pages/Tab1';
+import AppRoute from './pages/AppRoute';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -26,40 +26,25 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import Login from './pages/Login';
-import PrivateRoute from './components/PrivateRoute';
-import { useEffect, useState } from 'react';
-import { createStore, get } from './data/IonicStorage';
+import { AuthProvider, PrivateRoute } from 'react-auth-kit';
 
 setupIonicReact();
 
-
 const App: React.FC = () => {
-
-  const [authenticated, setAuthenticated] = useState<boolean>(false);
-
-
-  useEffect(() => {
-    (async () => {
-      await createStore("lpDB");
-      const auth = await get("user");
-      console.log(!!auth, auth);
-      setAuthenticated(!!auth);
-    })()
-
-  }, [])
-
   return (
     <IonApp>
-      <IonReactRouter>
-        <IonRouterOutlet>
-          <Route exact path="/login">
-            <Login />
-          </Route>
-          <PrivateRoute isAuthenticated={authenticated} authenticationPath="/login">
-            <Tab1 />
-          </PrivateRoute>
-        </IonRouterOutlet>
-      </IonReactRouter>
+      <AuthProvider authType="localstorage" authName="_auth">
+        <IonReactRouter>
+          <IonRouterOutlet>
+            <Route exact path="/login">
+              <Login />
+            </Route>
+            <PrivateRoute loginPath="/login">
+              <AppRoute />
+            </PrivateRoute>
+          </IonRouterOutlet>
+        </IonReactRouter>
+      </AuthProvider>
     </IonApp>
   )
 };

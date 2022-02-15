@@ -1,6 +1,6 @@
 import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonLoading, IonPage, IonRouterLink, IonTitle, IonToolbar, useIonRouter } from "@ionic/react";
 import { MouseEventHandler, useState } from "react";
-import { set } from "../data/IonicStorage";
+import { useSignIn } from "react-auth-kit";
 
 const Login: React.FC = () => {
     const [username, setUsername] = useState<string>();
@@ -8,13 +8,32 @@ const Login: React.FC = () => {
     const [loading, setLoading] = useState(false);
 
     const history = useIonRouter();
+    const signIn = useSignIn();
 
     const loginHandler: MouseEventHandler = async (event) => {
         event.preventDefault();
         setLoading(true);
-        await set("user", "Nico");
-        setLoading(false);
-        history.push('/home')
+        var options = {
+            method: "POST",
+            header: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username, password })
+        }
+        fetch('/users/login', options).then(res => res.json()).then(res => {
+            if (res.status === 200) {
+                if (signIn({ token: res.token, expiresIn: res.expiresIn, tokenType: "Bearer", authState: res.authUserState })) {
+                    setLoading(false);
+                    history.push('/home')
+                } else {
+                    setLoading(false);
+                    alert("Wrong credentials")
+                }
+            } else {
+                setLoading(false);
+                alert("Wrong credentials");
+            }
+        })
     }
 
     return (

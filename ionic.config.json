@@ -1,0 +1,7 @@
+{
+  "name": "Lernplattform",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}

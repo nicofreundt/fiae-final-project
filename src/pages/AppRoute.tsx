@@ -5,9 +5,9 @@ import Task from './DataViews/Task';
 import Topic from './DataViews/Topic';
 import Home from './Home';
 import Tab2 from './Tab2';
-import Tab3 from './Tab3';
+import Profile from './Profile';
 
-const Tab1: React.FC = () => {
+const AppRoute: React.FC = () => {
   return (
     <IonTabs>
       <IonRouterOutlet>
@@ -23,8 +23,8 @@ const Tab1: React.FC = () => {
         <Route path="/tab2">
           <Tab2 />
         </Route>
-        <Route path="/tab3">
-          <Tab3 />
+        <Route path="/profile">
+          <Profile />
         </Route>
       </IonRouterOutlet>
       <IonTabBar slot="bottom">
@@ -36,13 +36,13 @@ const Tab1: React.FC = () => {
           <IonIcon icon={homeOutline} />
           <IonLabel>Home</IonLabel>
         </IonTabButton>
-        <IonTabButton tab="tab3" href="/tab3">
+        <IonTabButton tab="profile" href="/profile">
           <IonIcon icon={personCircleOutline} />
-          <IonLabel>User</IonLabel>
+          <IonLabel>Profil</IonLabel>
         </IonTabButton>
       </IonTabBar>
     </IonTabs>
   );
 };
 
-export default Tab1;
+export default AppRoute;

@@ -1,12 +1,36 @@
-import { IonBackButton, IonButtons, IonContent, IonHeader, IonLabel, IonPage, IonTitle, IonToolbar } from "@ionic/react";
+import { IonBackButton, IonButtons, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from "@ionic/react";
+import { useEffect, useRef, useState } from "react";
+import { useAuthHeader } from "react-auth-kit";
 import { useParams } from "react-router";
-import { aufgaben } from "../Home";
+import ReactMarkdown from "react-markdown";
+import { URL } from "../../misc/setting";
+
+interface taskType {
+    tasks_id: number,
+    Thema: string,
+    Titel: string,
+    Text: string,
+    Level: string
+}
 
 const Task: React.FC = () => {
 
-    const { task } = useParams<{ task: string }>();
+    const [task, setTask] = useState<taskType>();
+    const { taskID } = useParams<{ taskID: string }>();
 
-    let aufgabe = aufgaben.filter(aufgabe => aufgabe.id === parseInt(task))[0]
+    const authHeader = useAuthHeader()();
+
+    const fetchOptions = useRef({
+        'headers': {
+            'Authorization': authHeader
+        }
+    });
+
+    const taskIDRef = useRef(taskID);
+
+    useEffect(() => {
+        fetch(`${URL}/tasks/task/${taskIDRef.current}`, fetchOptions.current).then(res => res.json()).then(task => setTask(task));
+    }, [])
 
     return (
         <IonPage>
@@ -15,13 +39,11 @@ const Task: React.FC = () => {
                     <IonButtons slot="start">
                         <IonBackButton />
                     </IonButtons>
-                    <IonTitle>{aufgabe.titel}</IonTitle>
+                    <IonTitle>{task?.Titel}</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent className="ion-padding">
-                <IonLabel>
-                    {aufgabe.text}
-                </IonLabel>
+                <ReactMarkdown>{task?.Text!}</ReactMarkdown>
             </IonContent>
         </IonPage>
     )

@@ -1,6 +1,7 @@
 import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonLoading, IonPage, IonRouterLink, IonTitle, IonToolbar, useIonRouter } from "@ionic/react";
 import { MouseEventHandler, useState } from "react";
 import { useSignIn } from "react-auth-kit";
+import { URL } from "../misc/setting";
 
 const Login: React.FC = () => {
     const [username, setUsername] = useState<string>();
@@ -15,20 +16,22 @@ const Login: React.FC = () => {
         setLoading(true);
         var options = {
             method: "POST",
-            header: {
+            headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({ username, password })
         }
-        fetch('/users/login', options).then(res => res.json()).then(res => {
+        fetch(`${URL}/users`, options).then(res => {
             if (res.status === 200) {
-                if (signIn({ token: res.token, expiresIn: res.expiresIn, tokenType: "Bearer", authState: res.authUserState })) {
-                    setLoading(false);
-                    history.push('/home')
-                } else {
-                    setLoading(false);
-                    alert("Wrong credentials")
-                }
+                res.json().then(data => {
+                    if (signIn({ token: data.token, expiresIn: data.expiresIn, tokenType: "Bearer", authState: data.authUserState })) {
+                        setLoading(false);
+                        history.push('/home')
+                    } else {
+                        setLoading(false);
+                        alert("SignIn went wrong")
+                    }
+                })
             } else {
                 setLoading(false);
                 alert("Wrong credentials");

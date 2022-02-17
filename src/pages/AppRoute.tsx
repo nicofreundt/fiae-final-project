@@ -1,6 +1,6 @@
 import { IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
 import { bookOutline, homeOutline, personCircleOutline } from 'ionicons/icons';
-import { Route } from 'react-router';
+import { Redirect, Route } from 'react-router';
 import Task from './DataViews/Task';
 import Topic from './DataViews/Topic';
 import Home from './Home';
@@ -11,10 +11,11 @@ const AppRoute: React.FC = () => {
   return (
     <IonTabs>
       <IonRouterOutlet>
+        <Redirect exact path='/' to="/home"/>
         <Route exact path="/home">
           <Home />
         </Route>
-        <Route exact path="/home/:topic/:task">
+        <Route exact path="/home/:topic/:taskID">
           <Task />
         </Route>
         <Route exact path="/home/:topic">

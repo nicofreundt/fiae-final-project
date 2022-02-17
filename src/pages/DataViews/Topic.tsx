@@ -1,12 +1,35 @@
 import { IonBackButton, IonButtons, IonCard, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from "@ionic/react";
+import { useEffect, useRef, useState } from "react";
+import { useAuthHeader } from "react-auth-kit";
 import { useParams } from "react-router";
-import { aufgaben } from "../Home";
+import { URL } from "../../misc/setting";
+
+interface taskType {
+    tasks_id: number,
+    Thema: string,
+    Titel: string,
+    Text: string,
+    Level: string
+}
 
 const Topic: React.FC = () => {
 
+    const [tasks, setTasks] = useState<taskType[]>([]);
     const { topic } = useParams<{ topic: string }>();
 
-    var hello = aufgaben.filter(aufgabe => aufgabe.thema.toLowerCase() === topic)
+    const topicRef = useRef(topic);
+
+    const authHeader = useAuthHeader()();
+
+    const fetchOptions = useRef({
+        'headers': {
+            'Authorization': authHeader
+        }
+    });
+
+    useEffect(() => {
+        fetch(`${URL}/tasks/${topicRef.current}`, fetchOptions.current).then(res => res.json()).then(tasks => setTasks(tasks))
+    }, [])
 
     return (
         <IonPage>
@@ -19,10 +42,10 @@ const Topic: React.FC = () => {
                 </IonToolbar>
             </IonHeader>
             <IonContent>
-                {hello.map(aufgabe => (
-                    <IonCard routerLink={"/home/" + topic + "/" + aufgabe.id} key={aufgabe.id}>
+                {tasks.map(task => (
+                    <IonCard routerLink={"/home/" + topic + "/" + task.tasks_id} key={task.tasks_id}>
                         <IonCardHeader>
-                            <IonCardTitle>{aufgabe.titel}</IonCardTitle>
+                            <IonCardTitle>{task.Titel}</IonCardTitle>
                         </IonCardHeader>
                     </IonCard>
                 ))}

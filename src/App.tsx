@@ -39,9 +39,7 @@ const App: React.FC = () => {
             <Route exact path="/login">
               <Login />
             </Route>
-            <PrivateRoute loginPath="/login">
-              <AppRoute />
-            </PrivateRoute>
+            <PrivateRoute component={AppRoute} loginPath="/login" />
           </IonRouterOutlet>
         </IonReactRouter>
       </AuthProvider>

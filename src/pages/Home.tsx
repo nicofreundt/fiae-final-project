@@ -1,34 +1,23 @@
 import { IonCard, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from "@ionic/react"
-
-export const aufgaben = [
-    {
-        "id": 1,
-        "titel": "Aufgabe 1",
-        "thema": "Python",
-        "text": "Dies ist die aller erste Aufgabe"
-    },
-    {
-        "id": 2,
-        "titel": "Aufgabe 2",
-        "thema": "Python",
-        "text": "Dies ist die zweit tollste aller Aufgabe"
-    },
-    {
-        "id": 3,
-        "titel": "Aufgabe 3",
-        "thema": "Java",
-        "text": "Alle guten Aufgaben sind drei!"
-    },
-    {
-        "id": 4,
-        "titel": "Aufgabe 4",
-        "thema": "Java",
-        "text": "Aufgaben-Squad ist nie allein"
-    }
-]
-
+import { useEffect, useRef, useState } from "react"
+import { useAuthHeader } from "react-auth-kit";
+import { URL } from "../misc/setting";
 
 const Home: React.FC = () => {
+
+    const [topics, setTopics] = useState<string[]>([]);
+    const authHeader = useAuthHeader()();
+
+    const fetchOptions = useRef({
+        'headers': {
+            'Authorization': authHeader
+        }
+    });
+
+    useEffect(() => {
+        fetch(`${URL}/tasks/topics`, fetchOptions.current).then(res => res.json()).then(topics => setTopics(topics));
+    }, [])
+
     return (
         <IonPage>
             <IonHeader>
@@ -37,13 +26,13 @@ const Home: React.FC = () => {
                 </IonToolbar>
             </IonHeader>
             <IonContent>
-                {Array.from(new Set(aufgaben.map(aufgabe => aufgabe.thema))).map(thema => (
-                    <IonCard routerLink={"/home/" + thema.toLowerCase()} key={thema}>
+                {topics.map(topic => 
+                    <IonCard routerLink={"/home/" + topic.toLowerCase()} key={topic}>
                         <IonCardHeader>
-                            <IonCardTitle>{thema}</IonCardTitle>
+                            <IonCardTitle>{topic}</IonCardTitle>
                         </IonCardHeader>
                     </IonCard>
-                ))}
+                    )}
             </IonContent>
         </IonPage>
     )

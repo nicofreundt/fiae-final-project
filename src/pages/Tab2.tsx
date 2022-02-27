@@ -1,20 +1,19 @@
-import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonLabel, IonPage, IonProgressBar, IonTitle, IonToolbar } from '@ionic/react';
+import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonPage, IonProgressBar, IonTitle, IonToolbar } from '@ionic/react';
 import { useEffect, useRef, useState } from 'react';
-import { useAuthHeader } from 'react-auth-kit';
+import { useAuthHeader, useAuthUser } from 'react-auth-kit';
 import { URL } from '../misc/setting';
 
 interface people {
-  Name: string,
-  Bereich: string,
-  LVL: string,
-  Prozent: number
+  ID: number,
+  name: string,
+  percentage: number
 }
 
 const Tab2: React.FC = () => {
 
   const [people, setPeople] = useState<people[]>([]);
-  const [percentages, setPercentages] = useState<{ name: string, percentage: number }[]>([]);
   const authHeader = useAuthHeader()();
+  const auth = useRef(useAuthUser());
 
   const fetchOptions = useRef({
     'headers': {
@@ -23,20 +22,15 @@ const Tab2: React.FC = () => {
   });
 
   useEffect(() => {
-    fetch(`${URL}/status/getProzent`, fetchOptions.current)
+    fetch(`${URL}/status/allUsers`, fetchOptions.current)
       .then(res => res.json())
       .then(data => {
-        console.log(data);
-        /* setPeople(data)
-        var arr: people[] = data;
-        var names = Array.from(new Set(arr.map(e => e.Name)));
-        var percentage: { name: string, percentage: number }[] = [];
-        for (let n of names) {
-          let p = arr.filter(obj => obj.Name === n).map(obj => obj.Prozent).reduce((pv, cv) => pv + cv, 0);
-          percentage.push({ name: n, percentage: Math.round(p / arr.filter(obj => obj.Name === n).length) / 100 });
+        if (auth.current()!.role === 'admin') {
+          setPeople(data)
+        } else {
+          data = data.filter((u: { name: string; }) => u.name === auth.current()!.user)
+          setPeople(data)
         }
-        console.log(percentage);
-        setPercentages(percentage); */
       });
   }, [])
 
@@ -44,22 +38,22 @@ const Tab2: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Tab 2</IonTitle>
+          <IonTitle>Lernfortschritt</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Tab 2</IonTitle>
+            <IonTitle size="large">Lernfortschritt</IonTitle>
           </IonToolbar>
         </IonHeader>
         {people.map(p =>
-          <IonCard key={p.Name}>
+          <IonCard key={p.ID} routerLink={`/tab2/${p.ID}`}>
             <IonCardHeader>
-              <IonCardTitle>{p.Name}</IonCardTitle>
+              <IonCardTitle>{p.name}</IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
-              <IonProgressBar value={percentages?.filter(obj => obj.name === p.Name)[0]!.percentage} />
+              <IonProgressBar value={p.percentage} />
             </IonCardContent>
           </IonCard>
         )}

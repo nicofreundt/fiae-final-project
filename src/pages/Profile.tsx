@@ -1,4 +1,4 @@
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonItem, IonList, IonPage, IonRefresher, IonRefresherContent, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonHeader, IonLabel, IonPage, IonRefresher, IonRefresherContent, IonTitle, IonToolbar } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useAuthUser, useSignOut } from 'react-auth-kit';
 
@@ -28,24 +28,24 @@ const Profile: React.FC = () => {
           <IonTitle>Profil</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className='ion-padding-horizontal'>
+      <IonContent>
         <IonRefresher slot='fixed' onIonRefresh={(event) => { getUsers().then(data => setUser(data)).then(() => event.detail.complete()) }}>
           <IonRefresherContent>
           </IonRefresherContent>
         </IonRefresher>
         {user &&
-          <IonCard className='ion-no-margin ion-margin-bottom' key={user.id}>
+          <IonCard key={user.id}>
             <IonCardHeader>
               <IonCardTitle>Hey, {auth()!.user}!</IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
-              <IonList>
-                <IonItem>Name:<br />{auth()!.user}</IonItem>
-                <IonItem>Mail-Adresse:<br />{auth()!.email}</IonItem>
-              </IonList>
+              <IonCardSubtitle className="ion-margin-top">Name:</IonCardSubtitle>
+              <IonLabel>{auth()!.user}</IonLabel>
+              <IonCardSubtitle className="ion-margin-top">E-Mail:</IonCardSubtitle>
+              <IonLabel>{auth()!.email}</IonLabel>
             </IonCardContent>
           </IonCard>}
-        <IonButton onClick={signOut}>Abmelden</IonButton>
+        <IonButton className="ion-margin-horizontal" onClick={signOut}>Abmelden</IonButton>
       </IonContent>
     </IonPage>
   );

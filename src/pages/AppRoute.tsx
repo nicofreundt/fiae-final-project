@@ -6,12 +6,13 @@ import Topic from './DataViews/Topic';
 import Home from './Home';
 import Tab2 from './Tab2';
 import Profile from './Profile';
+import UsersProgress from './UsersProgress';
 
 const AppRoute: React.FC = () => {
   return (
     <IonTabs>
       <IonRouterOutlet>
-        <Redirect exact path='/' to="/home"/>
+        <Redirect exact path='/' to="/home" />
         <Route exact path="/home">
           <Home />
         </Route>
@@ -21,8 +22,11 @@ const AppRoute: React.FC = () => {
         <Route exact path="/home/:topic">
           <Topic />
         </Route>
-        <Route path="/tab2">
+        <Route exact path="/tab2">
           <Tab2 />
+        </Route>
+        <Route path="/tab2/:id">
+          <UsersProgress />
         </Route>
         <Route path="/profile">
           <Profile />

@@ -1,4 +1,4 @@
-import { IonAccordion, IonAccordionGroup, IonBackButton, IonButtons, IonCard, IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonProgressBar, IonTitle, IonToolbar } from "@ionic/react";
+import { IonAccordion, IonAccordionGroup, IonBackButton, IonButtons, IonCard, IonContent, IonHeader, IonItem, IonLabel, IonList, IonLoading, IonPage, IonProgressBar, IonTitle, IonToolbar } from "@ionic/react";
 import { useEffect, useRef, useState } from "react";
 import { useAuthHeader } from "react-auth-kit";
 import { useParams } from "react-router";
@@ -34,29 +34,33 @@ const UsersProgress: React.FC = () => {
                 </IonToolbar>
             </IonHeader>
             <IonContent>
-                <IonAccordionGroup>
-                    {Object.entries(status).map(([k, v]) =>    
-                        <IonCard className="ion-margin-bottom" key={k}>
-                            <IonAccordion>
-                                <IonItem slot="header">
-                                    <IonLabel>
-                                        {k}
-                                    </IonLabel>
-                                </IonItem>
-                                <IonList slot="content">
-                                    {Array.isArray(v) && v.map((w: { Level: string; Wert: number }) =>     
-                                        <IonItem key={k + w.Level}>
-                                            <IonLabel className="ion-margin-bottom">
-                                                {w.Level}
-                                                <IonProgressBar className="ion-margin-top" value={w.Wert}/>
-                                            </IonLabel>
-                                        </IonItem>
-                                    )}
-                                </IonList>
-                            </IonAccordion>
-                        </IonCard>
-                    )}
-                </IonAccordionGroup>
+                {Object.entries(status).length ? (
+                    <IonAccordionGroup>
+                        {Object.entries(status).map(([k, v]) =>    
+                            <IonCard className="ion-margin-bottom" key={k}>
+                                <IonAccordion>
+                                    <IonItem slot="header">
+                                        <IonLabel>
+                                            {k}
+                                        </IonLabel>
+                                    </IonItem>
+                                    <IonList slot="content">
+                                        {Array.isArray(v) && v.map((w: { Level: string; Wert: number }) =>     
+                                            <IonItem key={k + w.Level}>
+                                                <IonLabel className="ion-margin-bottom">
+                                                    {w.Level}
+                                                    <IonProgressBar className="ion-margin-top" value={w.Wert}/>
+                                                </IonLabel>
+                                            </IonItem>
+                                        )}
+                                    </IonList>
+                                </IonAccordion>
+                            </IonCard>
+                        )}
+                    </IonAccordionGroup>
+                ) : (
+                    <IonLoading isOpen={true} />
+                )}
             </IonContent>
         </IonPage>
     )

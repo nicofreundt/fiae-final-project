@@ -1,4 +1,4 @@
-import { IonBackButton, IonButtons, IonCard, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonItem, IonLoading, IonPage, IonTitle, IonToolbar } from "@ionic/react";
+import { IonBackButton, IonButtons, IonCard, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonLoading, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 import { useEffect, useRef, useState } from "react";
 import { useAuthHeader } from "react-auth-kit";
 import { useParams } from "react-router";
@@ -56,7 +56,7 @@ const Topic: React.FC = () => {
                         <div key={level}>
                             <h5 className="ion-margin-start">{level}</h5>
                             {tasks.filter(task => task.Level === level).map(task => (
-                                <IonCard routerLink={"/home/" + topic + "/" + task.tasks_id} key={task.tasks_id}>
+                                <IonCard routerLink={"/topic/" + topic + "/" + task.tasks_id} key={task.tasks_id}>
                                     <IonCardHeader>
                                         <IonCardTitle>{task.Titel}</IonCardTitle>
                                     </IonCardHeader>

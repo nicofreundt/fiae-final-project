@@ -26,7 +26,7 @@ const Login: React.FC = () => {
                 res.json().then(data => {
                     if (signIn({ token: data.token, expiresIn: data.expiresIn, tokenType: "Bearer", authState: data.authUserState })) {
                         setLoading(false);
-                        history.push('/home')
+                        history.push('/')
                     } else {
                         setLoading(false);
                         alert("SignIn went wrong")

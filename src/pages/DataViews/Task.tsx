@@ -1,4 +1,4 @@
-import { IonBackButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar } from "@ionic/react";
+import { IonBackButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonLoading, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 import { useEffect, useRef, useState } from "react";
 import { useAuthHeader } from "react-auth-kit";
 import { useParams } from "react-router";
@@ -44,8 +44,14 @@ const Task: React.FC = () => {
                 </IonToolbar>
             </IonHeader>
             <IonContent className="ion-padding">
-                <ReactMarkdown>{task?.Text!}</ReactMarkdown>
-                <IonFab horizontal="end" vertical="bottom" slot="fixed"><IonFabButton><IonIcon icon={checkmarkOutline}/></IonFabButton></IonFab>
+                {task ? (
+                    <>
+                        <ReactMarkdown>{task?.Text!}</ReactMarkdown>
+                        <IonFab horizontal="end" vertical="bottom" slot="fixed"><IonFabButton><IonIcon icon={checkmarkOutline}/></IonFabButton></IonFab>
+                    </>
+                ):(
+                    <IonLoading isOpen={true}/>
+                )}
             </IonContent>
         </IonPage>
     )

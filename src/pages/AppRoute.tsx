@@ -3,8 +3,8 @@ import { bookOutline, homeOutline, personCircleOutline } from 'ionicons/icons';
 import { Redirect, Route } from 'react-router';
 import Task from './DataViews/Task';
 import Topic from './DataViews/Topic';
+import Topics from './Topics';
 import Home from './Home';
-import Tab2 from './Tab2';
 import Profile from './Profile';
 import UsersProgress from './UsersProgress';
 
@@ -13,19 +13,19 @@ const AppRoute: React.FC = () => {
     <IonTabs>
       <IonRouterOutlet>
         <Redirect exact path='/' to="/home" />
+        <Route exact path="/topic">
+          <Topics />
+        </Route>
+        <Route exact path="/topic/:topic/:taskID">
+          <Task />
+        </Route>
+        <Route exact path="/topic/:topic">
+          <Topic />
+        </Route>
         <Route exact path="/home">
           <Home />
         </Route>
-        <Route exact path="/home/:topic/:taskID">
-          <Task />
-        </Route>
-        <Route exact path="/home/:topic">
-          <Topic />
-        </Route>
-        <Route exact path="/tab2">
-          <Tab2 />
-        </Route>
-        <Route path="/tab2/:id">
+        <Route path="/home/:id">
           <UsersProgress />
         </Route>
         <Route path="/profile">
@@ -33,11 +33,11 @@ const AppRoute: React.FC = () => {
         </Route>
       </IonRouterOutlet>
       <IonTabBar slot="bottom">
-        <IonTabButton tab="home" href="/home">
+        <IonTabButton tab="topic" href="/topic">
           <IonIcon icon={bookOutline} />
           <IonLabel>Themen</IonLabel>
         </IonTabButton>
-        <IonTabButton tab="tab2" href="/tab2">
+        <IonTabButton tab="home" href="/home">
           <IonIcon icon={homeOutline} />
           <IonLabel>Home</IonLabel>
         </IonTabButton>

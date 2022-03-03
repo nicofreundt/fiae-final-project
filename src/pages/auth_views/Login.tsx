@@ -1,7 +1,7 @@
 import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonLoading, IonPage, IonRouterLink, IonTitle, IonToolbar, useIonRouter } from "@ionic/react";
 import { MouseEventHandler, useState } from "react";
 import { useSignIn } from "react-auth-kit";
-import { URL } from "../misc/setting";
+import { URL } from "../../misc/setting";
 
 const Login: React.FC = () => {
     const [username, setUsername] = useState<string>();

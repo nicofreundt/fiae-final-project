@@ -2,7 +2,7 @@ import { IonAccordion, IonAccordionGroup, IonBackButton, IonButtons, IonCard, Io
 import { useEffect, useRef, useState } from "react";
 import { useAuthHeader } from "react-auth-kit";
 import { useParams } from "react-router";
-import { URL } from "../misc/setting";
+import { URL } from "../../misc/setting";
 
 const UsersProgress: React.FC = () => {
 

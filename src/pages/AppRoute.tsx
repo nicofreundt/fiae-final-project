@@ -1,12 +1,12 @@
 import { IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
 import { bookOutline, homeOutline, personCircleOutline } from 'ionicons/icons';
 import { Redirect, Route } from 'react-router';
-import Task from './DataViews/Task';
-import Topic from './DataViews/Topic';
+import Task from './data_views/Task';
+import Topic from './data_views/Topic';
 import Topics from './Topics';
 import Home from './Home';
 import Profile from './Profile';
-import UsersProgress from './UsersProgress';
+import UsersProgress from './progress_views/UsersProgress';
 
 const AppRoute: React.FC = () => {
   return (

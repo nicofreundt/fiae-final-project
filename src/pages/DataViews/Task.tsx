@@ -1,9 +1,10 @@
-import { IonBackButton, IonButtons, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from "@ionic/react";
+import { IonBackButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 import { useEffect, useRef, useState } from "react";
 import { useAuthHeader } from "react-auth-kit";
 import { useParams } from "react-router";
 import ReactMarkdown from "react-markdown";
 import { URL } from "../../misc/setting";
+import { checkmarkOutline } from "ionicons/icons";
 
 interface taskType {
     tasks_id: number,
@@ -44,6 +45,7 @@ const Task: React.FC = () => {
             </IonHeader>
             <IonContent className="ion-padding">
                 <ReactMarkdown>{task?.Text!}</ReactMarkdown>
+                <IonFab horizontal="end" vertical="bottom" slot="fixed"><IonFabButton><IonIcon icon={checkmarkOutline}/></IonFabButton></IonFab>
             </IonContent>
         </IonPage>
     )

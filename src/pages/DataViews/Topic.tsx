@@ -1,4 +1,4 @@
-import { IonBackButton, IonButtons, IonCard, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from "@ionic/react";
+import { IonBackButton, IonButtons, IonCard, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonItem, IonLoading, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 import { useEffect, useRef, useState } from "react";
 import { useAuthHeader } from "react-auth-kit";
 import { useParams } from "react-router";
@@ -15,6 +15,8 @@ interface taskType {
 const Topic: React.FC = () => {
 
     const [tasks, setTasks] = useState<taskType[]>([]);
+    const [levels, setLevels] = useState<string[]>([]);
+    const [loading, setLoading] = useState(false);
     const { topic } = useParams<{ topic: string }>();
 
     const topicRef = useRef(topic);
@@ -28,7 +30,12 @@ const Topic: React.FC = () => {
     });
 
     useEffect(() => {
-        fetch(`${URL}/tasks/${topicRef.current}`, fetchOptions.current).then(res => res.json()).then(tasks => setTasks(tasks))
+        setLoading(true);
+        fetch(`${URL}/tasks/${topicRef.current}`, fetchOptions.current).then(res => res.json()).then(tasks => {
+            setLevels(Array.from(new Set(tasks.map((task: { Level: string; }) => task.Level))));
+            setTasks(tasks);
+            setLoading(false);
+        })
     }, [])
 
     return (
@@ -42,13 +49,22 @@ const Topic: React.FC = () => {
                 </IonToolbar>
             </IonHeader>
             <IonContent>
-                {tasks.map(task => (
-                    <IonCard routerLink={"/home/" + topic + "/" + task.tasks_id} key={task.tasks_id}>
-                        <IonCardHeader>
-                            <IonCardTitle>{task.Titel}</IonCardTitle>
-                        </IonCardHeader>
-                    </IonCard>
-                ))}
+                {loading ? 
+                    <IonLoading isOpen={loading}/>
+                    :
+                    levels.map(level => (
+                        <div key={level}>
+                            <h5 className="ion-margin-start">{level}</h5>
+                            {tasks.filter(task => task.Level === level).map(task => (
+                                <IonCard routerLink={"/home/" + topic + "/" + task.tasks_id} key={task.tasks_id}>
+                                    <IonCardHeader>
+                                        <IonCardTitle>{task.Titel}</IonCardTitle>
+                                    </IonCardHeader>
+                                </IonCard>
+                            ))}
+                        </div>
+                    ))
+                }
             </IonContent>
         </IonPage>
     )

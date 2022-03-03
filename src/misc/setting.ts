@@ -1,1 +1,1 @@
-export const URL = "https://nicofreundt.ddns.net:3001"
+export const URL = "https://nicofreundt.ddns.net/lernplattform"

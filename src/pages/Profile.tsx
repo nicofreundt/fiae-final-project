@@ -25,7 +25,7 @@ const Profile: React.FC = () => {
                         <IonCardSubtitle className="ion-margin-top">E-Mail:</IonCardSubtitle>
                         <IonLabel>{auth()!.email}</IonLabel>
                     </IonCardContent>
-                    <Avatar round={true} name={auth()!.user} style={{"z-index": "5", "position": "absolute", "top": "15px", "right": "15px"}}/>
+                    <Avatar round={true} name={auth()!.user} style={{"zIndex": "5", "position": "absolute", "top": "15px", "right": "15px"}}/>
                     <IonButton className="ion-margin" onClick={signOut}>Abmelden</IonButton>
                 </IonCard>
             </IonContent>
